@@ -1,11 +1,12 @@
 {
   "pages":[
+    "pages/splash/splash",
     "pages/index/index"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "Mini Program",
+    "navigationBarTitleText": "码语",
     "navigationBarTextStyle":"black"
   }
 }

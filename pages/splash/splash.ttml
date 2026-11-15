@@ -1,0 +1,29 @@
+<view class="splash-page">
+  <view class="ambient ambient-blue"></view>
+  <view class="ambient ambient-teal"></view>
+
+  <view class="brand-content">
+    <view class="logo-shell">
+      <image class="brand-logo" src="/icon-1024.jpg" mode="aspectFit" />
+    </view>
+
+    <view class="brand-name">码语</view>
+    <view class="brand-english">CODESPEAK</view>
+    <view class="brand-divider">
+      <view class="divider-line"></view>
+      <view class="divider-dot"></view>
+      <view class="divider-line"></view>
+    </view>
+    <view class="brand-slogan">程序员的开口第一课</view>
+    <view class="brand-description">专业词汇 · 标准发音 · 自信表达</view>
+  </view>
+
+  <view class="launch-status">
+    <view class="loading-dots">
+      <view class="loading-dot"></view>
+      <view class="loading-dot"></view>
+      <view class="loading-dot"></view>
+    </view>
+    <view class="launch-copy">让代码，有声可循</view>
+  </view>
+</view>
