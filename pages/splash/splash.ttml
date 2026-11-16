@@ -18,12 +18,17 @@
     <view class="brand-description">专业词汇 · 标准发音 · 自信表达</view>
   </view>
 
-  <view class="launch-status">
+  <view class="login-area" tt:if="{{!loading}}">
+    <button class="login-button" bindtap="handleLogin" disabled="{{loading}}">抖音一键登录</button>
+    <view class="login-tip">登录后开启你的发音学习之旅</view>
+  </view>
+
+  <view class="launch-status" tt:else>
     <view class="loading-dots">
       <view class="loading-dot"></view>
       <view class="loading-dot"></view>
       <view class="loading-dot"></view>
     </view>
-    <view class="launch-copy">让代码，有声可循</view>
+    <view class="launch-copy">正在登录，请稍候</view>
   </view>
 </view>
