@@ -1,4 +1,27 @@
-<view class="icon-wrapper">
-    <image class="icon-image" src="/icon-1024.jpg"></image>
+<view class="home-page">
+  <view class="home-header">
+    <view><view class="eyebrow">CODESPEAK</view><view class="page-title">今天，也从开口开始</view><view class="page-subtitle">每一个术语，都值得被准确表达</view></view>
+    <image class="mini-logo" src="/icon-1024.jpg" mode="aspectFit" />
   </view>
-  <view class="intro">抖音小程序 sass 模板</view>
+  <view class="continue-card">
+    <view class="continue-label">继续学习</view><view class="continue-title">{{continueName}}</view><view class="continue-meta">已学习 {{continueLearned}} / {{continueTotal}} 个单词</view>
+    <view class="hero-progress"><view class="hero-progress-value" style="width: {{progress}}%"></view></view>
+    <button class="continue-button" bindtap="startLearning" data-id="{{continueId}}">{{continueLearned > 0 ? '继续上次学习' : '开始学习'}} <text>→</text></button><view class="hero-code">&lt;/&gt;</view>
+  </view>
+  <view class="stats-row">
+    <view class="stat-item"><view class="stat-value">{{totalLearned}}</view><view class="stat-label">累计学习</view></view>
+    <view class="stat-item"><view class="stat-value accent">{{totalMastered}}</view><view class="stat-label">已经认识</view></view>
+    <view class="stat-item"><view class="stat-value">7<text class="stat-unit">天</text></view><view class="stat-label">连续学习</view></view>
+  </view>
+  <view class="section-heading"><view class="section-title">每日一词</view><view class="section-tag">TODAY</view></view>
+  <view class="daily-card">
+    <view class="word-topline"><view class="word-type">缩写</view><button class="audio-button" bindtap="playAudio">▶</button></view>
+    <view class="daily-word">API</view><view class="phonetic">/ˌeɪ piː ˈeɪ/</view><view class="full-name">Application Programming Interface</view><view class="meaning">应用程序编程接口</view>
+  </view>
+  <view class="section-heading library-heading"><view class="section-title">我的词库</view><button class="text-button" bindtap="openLibraries">全部词库 ›</button></view>
+  <view class="home-library" tt:for="{{libraries}}" tt:key="id" bindtap="startLearning" data-id="{{item.id}}">
+    <view class="library-symbol">{{item.symbol}}</view>
+    <view class="library-info"><view class="library-name">{{item.name}}</view><view class="library-progress"><view style="width: {{item.progress}}%"></view></view></view>
+    <view class="library-count">{{item.learned}}<text>/{{item.total}}</text></view>
+  </view>
+</view>

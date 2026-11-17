@@ -14,10 +14,14 @@ Page({
       force: true,
       success: (response) => {
         console.log(response.code)
+        tt.setStorageSync('codespeak_session', true)
+        const completedOnboarding = Boolean(tt.getStorageSync('codespeak_onboarded'))
         setTimeout(() => {
-          tt.redirectTo({
-            url: '/pages/index/index'
-          })
+          if (completedOnboarding) {
+            tt.switchTab({ url: '/pages/index/index' })
+          } else {
+            tt.redirectTo({ url: '/pages/onboarding/onboarding' })
+          }
         }, 3000)
       },
       fail: () => {

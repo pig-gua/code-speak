@@ -1,0 +1,23 @@
+<view class="dictionary-page">
+  <view class="dictionary-header"><view class="dictionary-eyebrow">DEVELOPER DICTIONARY</view><view class="dictionary-title">读懂，也要读得准确</view></view>
+  <view class="search-box"><text class="search-icon">⌕</text><input value="{{query}}" placeholder="搜索英文专业词汇" placeholder-class="search-placeholder" confirm-type="search" bindinput="handleInput" bindconfirm="handleConfirm" /><button tt:if="{{query}}" class="clear-button" bindtap="clearSearch">×</button></view>
+
+  <view tt:if="{{selectedWord}}" class="word-detail">
+    <view class="detail-category">{{selectedWord.category}}</view><button class="detail-audio" bindtap="playAudio">▶</button><button class="detail-back" bindtap="backToResults">‹ 返回结果</button>
+    <view class="detail-word">{{selectedWord.word}}</view><view class="detail-phonetic">{{selectedWord.phonetic}}</view>
+    <view class="detail-full-name" tt:if="{{selectedWord.fullName}}">{{selectedWord.fullName}}</view>
+    <view class="detail-meaning">{{selectedWord.meaning}}</view><button class="review-add {{addedToReview ? 'added' : ''}}" disabled="{{addedToReview}}" bindtap="addReview">{{addedToReview ? '✓ 已加入复习' : '＋ 加入复习'}}</button>
+  </view>
+
+  <view tt:elif="{{searched}}">
+    <view class="result-count">找到 {{results.length}} 个相关词汇</view>
+    <view class="result-item" tt:for="{{results}}" tt:key="word" data-word="{{item.word}}" bindtap="selectWord"><view><view class="result-word">{{item.word}}</view><view class="result-meaning">{{item.meaning}}</view></view><view class="result-right"><text>{{item.phonetic}}</text><view>›</view></view></view>
+    <view class="no-result" tt:if="{{results.length === 0}}"><view class="no-result-symbol">?</view><view class="no-result-title">暂未收录该词汇</view><view class="no-result-copy">试试搜索 API、Cache 或 Framework</view></view>
+  </view>
+
+  <view tt:else>
+    <view class="dictionary-section-title">最近搜索</view><view class="history-list"><button tt:for="{{history}}" tt:key="*this" data-word="{{item}}" bindtap="searchHistory">{{item}}</button></view>
+    <view class="dictionary-section-title hot-title">热门术语</view>
+    <view class="result-item" tt:for="{{hotWords}}" tt:key="word" data-word="{{item.word}}" bindtap="selectWord"><view><view class="result-word">{{item.word}}</view><view class="result-meaning">{{item.meaning}}</view></view><view class="result-arrow">›</view></view>
+  </view>
+</view>

@@ -1,0 +1,12 @@
+<view class="onboarding-page">
+  <view class="step-line"><view></view></view><view class="step-copy">{{isEditing ? '学习设置' : '初始设置'}} · 选择学习偏好</view>
+  <view class="onboarding-title"><view>你想学习哪些</view><view>编程词汇？</view></view>
+  <view class="onboarding-subtitle">选择感兴趣的词库，我们会为你生成专属学习计划</view>
+  <view class="option-grid">
+    <view tt:for="{{libraries}}" tt:key="id" class="option-card {{item.selected ? 'selected' : ''}}" data-id="{{item.id}}" bindtap="toggleLibrary">
+      <view class="option-symbol">{{item.symbol}}</view><view class="option-check" tt:if="{{item.selected}}">✓</view>
+      <view class="option-name">{{item.name}}</view><view class="option-description">{{item.description}}</view>
+    </view>
+  </view>
+  <view class="setup-footer"><view class="selection-copy">已选择 <text>{{selectedCount}}</text> 个词库，可随时修改</view><button class="setup-button {{selectedCount === 0 || saving ? 'is-disabled' : ''}}" disabled="{{selectedCount === 0 || saving}}" bindtap="completeSetup">{{saving ? '正在保存...' : isEditing ? '保存学习偏好' : '完成初始设置'}} <text tt:if="{{!saving}}">→</text></button></view>
+</view>

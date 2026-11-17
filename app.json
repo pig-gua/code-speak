@@ -1,12 +1,29 @@
 {
   "pages":[
     "pages/splash/splash",
-    "pages/index/index"
+    "pages/onboarding/onboarding",
+    "pages/index/index",
+    "pages/study/study",
+    "pages/library/library",
+    "pages/dictionary/dictionary",
+    "pages/profile/profile"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "码语",
     "navigationBarTextStyle":"black"
+  },
+  "tabBar": {
+    "color": "#94A3B8",
+    "selectedColor": "#2563EB",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页", "iconPath": "assets/tabbar/home.png", "selectedIconPath": "assets/tabbar/home-active.png" },
+      { "pagePath": "pages/library/library", "text": "词库", "iconPath": "assets/tabbar/library.png", "selectedIconPath": "assets/tabbar/library-active.png" },
+      { "pagePath": "pages/dictionary/dictionary", "text": "词典", "iconPath": "assets/tabbar/dictionary.png", "selectedIconPath": "assets/tabbar/dictionary-active.png" },
+      { "pagePath": "pages/profile/profile", "text": "我的", "iconPath": "assets/tabbar/profile.png", "selectedIconPath": "assets/tabbar/profile-active.png" }
+    ]
   }
 }

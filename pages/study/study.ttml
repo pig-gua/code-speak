@@ -1,0 +1,33 @@
+<view class="study-page">
+  <view class="study-header">
+    <view><view class="study-library">{{libraryName}}</view><view class="study-progress-copy" tt:if="{{!finished}}">{{displayIndex}} / {{words.length}}</view></view>
+    <view class="study-percent">{{progress}}%</view>
+  </view>
+  <view class="study-progress"><view style="width: {{progress}}%"></view></view>
+
+  <view tt:if="{{!finished}}" class="learning-area">
+    <view class="gesture-tip"><text>← 左滑需复习</text><text>右滑已认识 →</text></view>
+    <view class="word-card" style="transform: translateX({{offsetX}}px) rotate({{rotation}}deg);" bindtouchstart="handleTouchStart" bindtouchmove="handleTouchMove" bindtouchend="handleTouchEnd">
+      <view class="swipe-feedback review" tt:if="{{swipeHint === 'review'}}">需复习</view>
+      <view class="swipe-feedback known" tt:if="{{swipeHint === 'known'}}">已认识</view>
+      <view class="card-label">PROGRAMMING TERM</view>
+      <view class="word-title">{{currentWord.word}}</view>
+      <view class="word-phonetic">{{currentWord.phonetic}}</view>
+      <button class="study-audio" catchtap="playAudio">▶ <text>播放发音</text></button>
+      <view class="word-divider"></view>
+      <view class="full-name-block" tt:if="{{currentWord.fullName}}"><view class="detail-label">完整全称</view><view class="word-full-name">{{currentWord.fullName}}</view></view>
+      <view class="detail-label">中文含义</view><view class="word-meaning">{{currentWord.meaning}}</view>
+      <view class="example-block"><view class="detail-label">例句</view><view class="word-example">{{currentWord.example}}</view></view>
+    </view>
+    <view class="study-actions">
+      <button class="review-button" disabled="{{transitioning}}" bindtap="markReview"><text>↺</text> 需复习</button>
+      <button class="known-button" disabled="{{transitioning}}" bindtap="markKnown"><text>✓</text> 已认识</button>
+    </view>
+  </view>
+
+  <view class="summary-card" tt:else>
+    <view class="summary-icon">✓</view><view class="summary-eyebrow">WELL DONE</view><view class="summary-title">本轮学习完成</view><view class="summary-subtitle">每一次开口，都让你更接近专业表达</view>
+    <view class="summary-stats"><view><text>{{words.length}}</text><view>学习词语</view></view><view><text class="green">{{known}}</text><view>已经认识</view></view><view><text class="blue">{{review}}</text><view>需要复习</view></view></view>
+    <button class="summary-primary" bindtap="restart">再学一轮</button><button class="summary-secondary" bindtap="goHome">返回首页</button>
+  </view>
+</view>
