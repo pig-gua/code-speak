@@ -1,23 +1,23 @@
-import { getLearningLibraryIds, libraryCatalog, saveLearningLibraryIds } from '../../utils/library-data'
+import { addLibrary, ApiLibrary, getLibraries, showRequestError } from '../../utils/api'
 
 type LibraryEvent = { currentTarget: { dataset: { id: string } } }
 
 Page({
-  data: { learning: libraryCatalog.slice(0, 2), recommended: libraryCatalog.slice(2, 4) },
-  onShow() {
-    const selectedIds = getLearningLibraryIds()
-    this.setData({ learning: libraryCatalog.filter((item) => selectedIds.includes(item.id)), recommended: libraryCatalog.filter((item) => !selectedIds.includes(item.id)) })
+  data: { learning: [] as ApiLibrary[], recommended: [] as ApiLibrary[] },
+  onShow() { this.loadLibraries() },
+  loadLibraries() {
+    getLibraries().then((libraries) => {
+      this.setData({ learning: libraries.filter((item) => item.selected), recommended: libraries.filter((item) => !item.selected) })
+    }).catch(showRequestError)
   },
   startLearning(event: LibraryEvent) {
     tt.navigateTo({ url: `/pages/study/study?library=${event.currentTarget.dataset.id}` })
   },
   addLibrary(event: LibraryEvent) {
-    const id = event.currentTarget.dataset.id
-    const library = libraryCatalog.find((item) => item.id === id)
-    if (!library) return
-    const selectedIds = Array.from(new Set([...getLearningLibraryIds(), id]))
-    saveLearningLibraryIds(selectedIds)
-    this.setData({ learning: libraryCatalog.filter((item) => selectedIds.includes(item.id)), recommended: libraryCatalog.filter((item) => !selectedIds.includes(item.id)) })
-    tt.showToast({ title: `已添加${library.name}`, icon: 'success' })
+    const code = event.currentTarget.dataset.id
+    addLibrary(code).then((libraries) => {
+      this.setData({ learning: libraries.filter((item) => item.selected), recommended: libraries.filter((item) => !item.selected) })
+      tt.showToast({ title: '词库已添加', icon: 'success' })
+    }).catch(showRequestError)
   }
 })

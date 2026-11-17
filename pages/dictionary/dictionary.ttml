@@ -3,7 +3,7 @@
   <view class="search-box"><text class="search-icon">⌕</text><input value="{{query}}" placeholder="搜索英文专业词汇" placeholder-class="search-placeholder" confirm-type="search" bindinput="handleInput" bindconfirm="handleConfirm" /><button tt:if="{{query}}" class="clear-button" bindtap="clearSearch">×</button></view>
 
   <view tt:if="{{selectedWord}}" class="word-detail">
-    <view class="detail-category">{{selectedWord.category}}</view><button class="detail-audio" bindtap="playAudio">▶</button><button class="detail-back" bindtap="backToResults">‹ 返回结果</button>
+    <view class="detail-category">{{selectedWord.fullName ? '缩写术语' : '专业词汇'}}</view><button class="detail-audio" bindtap="playAudio">▶</button><button class="detail-back" bindtap="backToResults">‹ 返回结果</button>
     <view class="detail-word">{{selectedWord.word}}</view><view class="detail-phonetic">{{selectedWord.phonetic}}</view>
     <view class="detail-full-name" tt:if="{{selectedWord.fullName}}">{{selectedWord.fullName}}</view>
     <view class="detail-meaning">{{selectedWord.meaning}}</view><button class="review-add {{addedToReview ? 'added' : ''}}" disabled="{{addedToReview}}" bindtap="addReview">{{addedToReview ? '✓ 已加入复习' : '＋ 加入复习'}}</button>

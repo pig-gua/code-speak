@@ -5,11 +5,11 @@
     <view class="library-card-top"><view class="large-symbol">{{item.symbol}}</view><view class="library-card-info"><view class="library-card-name">{{item.name}}</view><view class="library-description">{{item.description}}</view></view><view class="progress-ring">{{item.progress}}<text>%</text></view></view>
     <view class="wide-progress"><view style="width: {{item.progress}}%"></view></view>
     <view class="library-metrics"><text>已学习 {{item.learned}} / {{item.total}}</text><text>已认识 {{item.mastered}}</text></view>
-    <button class="learn-button" data-id="{{item.id}}" bindtap="startLearning">{{item.learned > 0 ? '继续学习' : '开始学习'}} <text>→</text></button>
+    <button class="learn-button" data-id="{{item.code}}" bindtap="startLearning">{{item.learned > 0 ? '继续学习' : '开始学习'}} <text>→</text></button>
   </view>
   <view class="section-label recommended-label">推荐词库</view>
   <view class="library-card recommended-card" tt:for="{{recommended}}" tt:key="id">
-    <view class="library-card-top"><view class="large-symbol recommended-symbol">{{item.symbol}}</view><view class="library-card-info"><view class="library-card-name">{{item.name}}</view><view class="library-description">{{item.description}} · {{item.total}} 词</view></view><button class="add-button" data-id="{{item.id}}" bindtap="addLibrary">＋</button></view>
+    <view class="library-card-top"><view class="large-symbol recommended-symbol">{{item.symbol}}</view><view class="library-card-info"><view class="library-card-name">{{item.name}}</view><view class="library-description">{{item.description}} · {{item.total}} 词</view></view><button class="add-button" data-id="{{item.code}}" bindtap="addLibrary">＋</button></view>
   </view>
   <view class="empty-recommendation" tt:if="{{recommended.length === 0}}">推荐词库已全部添加</view>
 </view>

@@ -5,7 +5,7 @@
   </view>
   <view class="study-progress"><view style="width: {{progress}}%"></view></view>
 
-  <view tt:if="{{!finished}}" class="learning-area">
+  <view tt:if="{{!finished && currentWord}}" class="learning-area">
     <view class="gesture-tip"><text>← 左滑需复习</text><text>右滑已认识 →</text></view>
     <view class="word-card" style="transform: translateX({{offsetX}}px) rotate({{rotation}}deg);" bindtouchstart="handleTouchStart" bindtouchmove="handleTouchMove" bindtouchend="handleTouchEnd">
       <view class="swipe-feedback review" tt:if="{{swipeHint === 'review'}}">需复习</view>
@@ -25,7 +25,7 @@
     </view>
   </view>
 
-  <view class="summary-card" tt:else>
+  <view class="summary-card" tt:if="{{finished}}">
     <view class="summary-icon">✓</view><view class="summary-eyebrow">WELL DONE</view><view class="summary-title">本轮学习完成</view><view class="summary-subtitle">每一次开口，都让你更接近专业表达</view>
     <view class="summary-stats"><view><text>{{words.length}}</text><view>学习词语</view></view><view><text class="green">{{known}}</text><view>已经认识</view></view><view><text class="blue">{{review}}</text><view>需要复习</view></view></view>
     <button class="summary-primary" bindtap="restart">再学一轮</button><button class="summary-secondary" bindtap="goHome">返回首页</button>

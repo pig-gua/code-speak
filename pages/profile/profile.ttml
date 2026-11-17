@@ -1,6 +1,6 @@
 <view class="profile-page">
-  <view class="profile-card"><view class="avatar">码</view><view class="profile-info"><view class="profile-name">程序员小码</view><view class="profile-id">CodeSpeak Learner</view></view><view class="profile-badge">LV.01</view></view>
-  <view class="profile-stats"><view><text>{{totalLearned}}</text><view>累计学习</view></view><view><text class="green">{{totalMastered}}</text><view>已经认识</view></view><view><text>7</text><view>连续学习 / 天</view></view></view>
+  <view class="profile-card"><view class="avatar">码</view><view class="profile-info"><view class="profile-name">{{nickname}}</view><view class="profile-id">CodeSpeak Learner</view></view><view class="profile-badge">LV.01</view></view>
+  <view class="profile-stats"><view><text>{{totalLearned}}</text><view>累计学习</view></view><view><text class="green">{{totalMastered}}</text><view>已经认识</view></view><view><text>{{streakDays}}</text><view>连续学习 / 天</view></view></view>
   <view class="menu-group">
     <view class="menu-item" bindtap="openLibraries"><view class="menu-symbol">FE</view><view class="menu-name">我的词库</view><view class="menu-extra">{{libraryCount}} 个词库</view><view class="menu-arrow">›</view></view>
     <view class="menu-item" bindtap="openPreferences"><view class="menu-symbol teal">SE</view><view class="menu-name">偏好词库设置</view><view class="menu-arrow">›</view></view>

@@ -1,36 +1,46 @@
-import { getLearningLibraryIds, libraryCatalog } from '../../utils/library-data'
+import { getProfile, logout, saveAutoplay, showRequestError } from '../../utils/api'
 
 Page({
-  data: { autoplay: false, libraryCount: 2, totalLearned: 70, totalMastered: 46 },
+  data: { nickname: '程序员小码', avatarUrl: '', autoplay: false, libraryCount: 0, totalLearned: 0, totalMastered: 0, streakDays: 0 },
 
   onShow() {
-    const selectedIds = getLearningLibraryIds()
-    const libraries = libraryCatalog.filter((item) => selectedIds.includes(item.id))
-    this.setData({
-      autoplay: Boolean(tt.getStorageSync('codespeak_autoplay')),
-      libraryCount: libraries.length,
-      totalLearned: libraries.reduce((total, item) => total + item.learned, 0),
-      totalMastered: libraries.reduce((total, item) => total + item.mastered, 0)
-    })
+    getProfile().then((profile) => {
+      this.setData({
+        nickname: profile.nickname,
+        avatarUrl: profile.avatarUrl,
+        autoplay: profile.autoplay,
+        libraryCount: profile.libraryCount,
+        totalLearned: profile.totalLearned,
+        totalMastered: profile.totalMastered,
+        streakDays: profile.streakDays
+      })
+      tt.setStorageSync('codespeak_autoplay', profile.autoplay)
+    }).catch(showRequestError)
   },
   openLibraries() { tt.switchTab({ url: '/pages/library/library' }) },
   openPreferences() { tt.navigateTo({ url: '/pages/onboarding/onboarding?mode=edit' }) },
   toggleAutoplay(event: { detail: { value: boolean } }) {
+    const previous = this.data.autoplay
     const autoplay = event.detail.value
     this.setData({ autoplay })
-    tt.setStorageSync('codespeak_autoplay', autoplay)
+    saveAutoplay(autoplay).then(() => tt.setStorageSync('codespeak_autoplay', autoplay)).catch((error) => {
+      this.setData({ autoplay: previous })
+      showRequestError(error)
+    })
   },
   showPrivacy() {
-    tt.showModal({ title: '隐私说明', content: '当前演示版本仅在本机保存学习偏好和设置，不会上传个人信息或学习记录。', showCancel: false, confirmText: '我知道了' })
+    tt.showModal({ title: '隐私说明', content: '学习偏好和学习记录仅用于提供词汇学习服务，不会用于其他用途。', showCancel: false, confirmText: '我知道了' })
   },
   logout() {
     tt.showModal({
-      title: '退出登录', content: '退出后仍会保留你的学习偏好，确定退出吗？', confirmText: '退出',
+      title: '退出登录', content: '学习偏好和进度会保留在你的账号中，确定退出吗？', confirmText: '退出',
       success: (result) => {
-        if (result.confirm) {
+        if (!result.confirm) return
+        logout().catch(showRequestError).finally(() => {
           tt.removeStorageSync('codespeak_session')
+          tt.removeStorageSync('codespeak_token')
           tt.reLaunch({ url: '/pages/splash/splash' })
-        }
+        })
       }
     })
   }

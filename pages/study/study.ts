@@ -1,16 +1,8 @@
-import { getLibraryById } from '../../utils/library-data'
+import { ApiWord, getStudyWords, showRequestError, submitStudySession } from '../../utils/api'
+import { playWordAudio } from '../../utils/audio'
 
-type Word = { word: string; phonetic: string; meaning: string; fullName?: string; example: string }
 type StudyTouch = { touches: Array<{ clientX?: number; x?: number }> }
-
-const studyWords: Word[] = [
-  { word: 'API', phonetic: '/ˌeɪ piː ˈeɪ/', fullName: 'Application Programming Interface', meaning: '应用程序编程接口', example: 'This API returns the user profile.' },
-  { word: 'DOM', phonetic: '/dɒm/', fullName: 'Document Object Model', meaning: '文档对象模型', example: 'JavaScript can update the DOM.' },
-  { word: 'CSS', phonetic: '/ˌsiː es ˈes/', fullName: 'Cascading Style Sheets', meaning: '层叠样式表', example: 'CSS controls the visual style.' },
-  { word: 'Runtime', phonetic: '/ˈrʌntaɪm/', meaning: '运行时；运行环境', example: 'The runtime executes the program.' },
-  { word: 'SDK', phonetic: '/ˌes diː ˈkeɪ/', fullName: 'Software Development Kit', meaning: '软件开发工具包', example: 'Install the SDK before development.' },
-  { word: 'Cache', phonetic: '/kæʃ/', meaning: '缓存；高速缓冲存储器', example: 'The response is stored in cache.' }
-]
+type StudyResult = { wordId: number; status: 'known' | 'review' }
 
 let startX = 0
 let currentOffset = 0
@@ -22,9 +14,10 @@ function readTouchX(event: StudyTouch) {
 
 Page({
   data: {
-    libraryName: '前端开发',
-    words: studyWords,
-    currentWord: studyWords[0],
+    libraryId: 0,
+    libraryName: '',
+    words: [] as ApiWord[],
+    currentWord: null as ApiWord | null,
     currentIndex: 0,
     displayIndex: 1,
     progress: 0,
@@ -33,15 +26,18 @@ Page({
     swipeHint: '',
     known: 0,
     review: 0,
+    results: [] as StudyResult[],
     finished: false,
     transitioning: false
   },
 
   onLoad(query: { library?: string }) {
-    const libraryName = getLibraryById(query.library || 'frontend')?.name || '前端开发'
-    this.setData({ libraryName })
-    tt.setNavigationBarTitle({ title: libraryName })
-    if (tt.getStorageSync('codespeak_autoplay')) this.playAudio()
+    getStudyWords(query.library || 'basic').then(({ library, words }) => {
+      if (words.length === 0) throw new Error('该词库暂未收录单词')
+      this.setData({ libraryId: library.id, libraryName: library.name, words, currentWord: words[0] })
+      tt.setNavigationBarTitle({ title: library.name })
+      if (tt.getStorageSync('codespeak_autoplay')) this.playAudio()
+    }).catch((error) => showRequestError(error))
   },
 
   handleTouchStart(event: StudyTouch) {
@@ -62,9 +58,8 @@ Page({
 
   handleTouchEnd() {
     if (this.data.transitioning || this.data.finished) return
-    if (Math.abs(currentOffset) >= 80) {
-      this.markWord(currentOffset > 0 ? 'known' : 'review')
-    } else {
+    if (Math.abs(currentOffset) >= 80) this.markWord(currentOffset > 0 ? 'known' : 'review')
+    else {
       currentOffset = 0
       this.setData({ offsetX: 0, rotation: 0, swipeHint: '' })
     }
@@ -74,12 +69,14 @@ Page({
   markReview() { this.markWord('review') },
 
   markWord(status: 'known' | 'review') {
-    if (this.data.transitioning || this.data.finished) return
+    const currentWord = this.data.currentWord
+    if (!currentWord || this.data.transitioning || this.data.finished) return
     this.setData({ transitioning: true, offsetX: status === 'known' ? 420 : -420, swipeHint: status })
     setTimeout(() => {
       const nextIndex = this.data.currentIndex + 1
       const finished = nextIndex >= this.data.words.length
       const safeIndex = Math.min(nextIndex, this.data.words.length - 1)
+      const results = [...this.data.results, { wordId: currentWord.id, status }]
       currentOffset = 0
       this.setData({
         currentIndex: safeIndex,
@@ -87,6 +84,7 @@ Page({
         displayIndex: Math.min(nextIndex + 1, this.data.words.length),
         known: this.data.known + (status === 'known' ? 1 : 0),
         review: this.data.review + (status === 'review' ? 1 : 0),
+        results,
         progress: Math.round((nextIndex / this.data.words.length) * 100),
         finished,
         offsetX: 0,
@@ -94,19 +92,19 @@ Page({
         swipeHint: '',
         transitioning: false
       })
-      if (!finished && tt.getStorageSync('codespeak_autoplay')) this.playAudio()
+      if (finished) submitStudySession(this.data.libraryId, results).catch(showRequestError)
+      else if (tt.getStorageSync('codespeak_autoplay')) this.playAudio()
     }, 180)
   },
 
   playAudio() {
-    tt.showToast({ title: `播放：${this.data.currentWord.word}`, icon: 'none' })
+    if (this.data.currentWord) playWordAudio(this.data.currentWord)
   },
 
   restart() {
     currentOffset = 0
-    this.setData({ currentIndex: 0, currentWord: studyWords[0], displayIndex: 1, progress: 0, offsetX: 0, rotation: 0, swipeHint: '', known: 0, review: 0, finished: false, transitioning: false })
+    this.setData({ currentIndex: 0, currentWord: this.data.words[0], displayIndex: 1, progress: 0, offsetX: 0, rotation: 0, swipeHint: '', known: 0, review: 0, results: [], finished: false, transitioning: false })
   },
 
   goHome() { tt.switchTab({ url: '/pages/index/index' }) }
 })
-
