@@ -1,6 +1,7 @@
 .profile-page { padding: 36rpx 32rpx 56rpx; }
 .profile-card { display: flex; align-items: center; padding: 34rpx 28rpx; border-radius: 28rpx; background: #2563eb; color: #fff; }
 .avatar { display: flex; align-items: center; justify-content: center; width: 100rpx; height: 100rpx; border: 4rpx solid rgba(255,255,255,.25); border-radius: 50%; background: #fff; color: #2563eb; font-size: 42rpx; font-weight: 600; }
+.avatar-open-data { overflow: hidden; }
 .profile-info { flex: 1; margin-left: 24rpx; }
 .profile-name { font-size: 34rpx; font-weight: 600; }
 .profile-id { margin-top: 10rpx; color: rgba(255,255,255,.68); font-size: 21rpx; letter-spacing: 1rpx; }

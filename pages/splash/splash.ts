@@ -32,13 +32,10 @@ Page({
           showRequestError(error)
         })
       },
-      fail: () => {
+      fail: (error) => {
+        console.warn('抖音登录失败', error)
         this.setData({ loading: false })
-        tt.showToast({
-          title: '登录未完成，请重试',
-          icon: 'none',
-          duration: 2000
-        })
+        tt.showToast({ title: '登录未完成，请重试', icon: 'none', duration: 2000 })
       }
     })
   }

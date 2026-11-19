@@ -24,7 +24,7 @@ export type ApiWord = {
 type ApiResponse<T> = { code: number; message: string; data: T }
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
-export const apiOrigin = 'http://127.0.0.1:8080'
+export const apiOrigin = 'https://codespeak.abaaba.cloud'
 const baseUrl = `${apiOrigin}/api`
 
 export function getToken() {
@@ -109,8 +109,6 @@ export function addReviewWord(wordId: number) { return request<{ wordIds: number
 
 export function getProfile() {
   return request<{
-    nickname: string
-    avatarUrl: string
     autoplay: boolean
     libraryCount: number
     totalLearned: number

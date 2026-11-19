@@ -1,13 +1,11 @@
 import { getProfile, logout, saveAutoplay, showRequestError } from '../../utils/api'
 
 Page({
-  data: { nickname: '程序员小码', avatarUrl: '', autoplay: false, libraryCount: 0, totalLearned: 0, totalMastered: 0, streakDays: 0 },
+  data: { autoplay: false, libraryCount: 0, totalLearned: 0, totalMastered: 0, streakDays: 0 },
 
   onShow() {
     getProfile().then((profile) => {
       this.setData({
-        nickname: profile.nickname,
-        avatarUrl: profile.avatarUrl,
         autoplay: profile.autoplay,
         libraryCount: profile.libraryCount,
         totalLearned: profile.totalLearned,
@@ -29,7 +27,7 @@ Page({
     })
   },
   showPrivacy() {
-    tt.showModal({ title: '隐私说明', content: '学习偏好和学习记录仅用于提供词汇学习服务，不会用于其他用途。', showCancel: false, confirmText: '我知道了' })
+    tt.showModal({ title: '隐私说明', content: '昵称和头像由抖音直接展示，后端不会保存；学习偏好和学习记录仅用于提供词汇学习服务，不会用于其他用途。', showCancel: false, confirmText: '我知道了' })
   },
   logout() {
     tt.showModal({
